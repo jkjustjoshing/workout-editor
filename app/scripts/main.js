@@ -29,6 +29,10 @@ $(document).ready(function () {
                 // Parse as .tcx
                 model = new WorkoutEditor.Models.TcxModel({file: file});
                 break;
+            case 'gpx': 
+                // Parse as .tcx
+                model = new WorkoutEditor.Models.GpxModel({file: file});
+                break;
             default:
                 // Not supported file type
                 
