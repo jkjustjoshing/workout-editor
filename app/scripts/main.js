@@ -18,8 +18,29 @@ window.WorkoutEditor = {
 $(document).ready(function () {
     WorkoutEditor.init();
 
-    var fileModel = new WorkoutEditor.Models.FileModel();
+    var fileView = new WorkoutEditor.Views.FileView({el: $('div.uploader'), });
+    var mapModel = new WorkoutEditor.Models.MapsModel();
 
-    new WorkoutEditor.Views.FileView({el: $('div.uploader'), model: fileModel});
+    fileView.on('fileChanged', function(file) {
+        var name = file.name.split('.');
+        var model;
+        switch(name[name.length-1]) {
+            case 'tcx': 
+                // Parse as .tcx
+                model = new WorkoutEditor.Models.TcxModel({file: file});
+                break;
+            default:
+                // Not supported file type
+                
+                break;
+        }
+
+        model.on('change:data', function() {
+            mapModel.set('fileModel', model);
+            new WorkoutEditor.Views.MapsView({el: $('.map'), model: mapModel});
+        });
+
+
+    });
 
 });

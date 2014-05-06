@@ -1,33 +1,41 @@
 window.WorkoutEditor.Models = {
     MapsModel: Backbone.Model.extend({
         initialize: function() {
-            var coordinates = [];
-            this.get('data').trackpoints.forEach(function(point) {
-                coordinates.push(new google.maps.LatLng(point.position.latitude, point.position.longitude));
+            var which = this;
+            this.on('change:fileModel', function() {
+                var coordinates = [];
+
+                which.get('fileModel').get('data').trackpoints.forEach(function(point) {
+                    coordinates.push(new google.maps.LatLng(point.position.latitude, point.position.longitude));
+                });
+                which.set('coordinates', coordinates);
             });
-            this.set('coordinates', coordinates);
         }
     }),
-    FileModel: Backbone.Model.extend({
+    TcxModel: Backbone.Model.extend({
         defaults: {
             file: null,
             fileContents: ''
         },
-        updateFile: function(file) {
-            this.set('file', file);
-            var fr = new FileReader();
+        initialize: function() {
+            var which = this;
+            this.on('change:file', function() {
+                var fr = new FileReader();
 
-            fr.onload = (function(e) {
-                this.set('fileContents', fr.result);
-                this.parseFile(fr.result);
-            }).bind(this);
+                fr.onload = (function(e) {
+                    this.set('fileContents', fr.result);
+                    this.parse();
+                }).bind(this);
 
-            fr.readAsText(file);
+                fr.readAsText(which.get('file'));
+            });
+
+            this.trigger('change:file');
         },
-        parseFile: function(file) {
+        parse: function() {
             var data = {};
 
-            var xml = $($.parseXML(file)).children('TrainingCenterDatabase');
+            var xml = $($.parseXML(this.get('fileContents'))).find('TrainingCenterDatabase');
 
             var activity = xml.children('Activities').first().children('Activity').first();
             data.type = activity.attr('Sport');
@@ -57,7 +65,6 @@ window.WorkoutEditor.Models = {
             });
 
             this.set('data', data);
-            this.set('mapsModel', new window.WorkoutEditor.Models.MapsModel({data: data}));
         }
 
     })
