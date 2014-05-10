@@ -1,0 +1,14 @@
+<table>
+    <tr>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Time</th>
+    </tr>
+    <% _.each(trackpoints, function(trackpoint) { %>
+        <tr>
+            <td><%= trackpoint.position.latitude %></td>
+            <td><%= trackpoint.position.longitude %></td>
+            <td><%= trackpoint.time %></td>
+        </tr>
+    <% }); %>
+</table>

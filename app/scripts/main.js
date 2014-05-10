@@ -9,6 +9,8 @@ if(window.File && window.FileReader && window.FileList && window.Blob) {
 
 window.WorkoutEditor = {
     Collections: {},
+    Views: {},
+    Models: {},
     Routers: {},
     init: function () {
         console.log('Hello from Backbone!');
@@ -19,7 +21,7 @@ $(document).ready(function () {
     WorkoutEditor.init();
 
     var fileView = new WorkoutEditor.Views.FileView({el: $('div.uploader'), });
-    var mapModel = new WorkoutEditor.Models.MapsModel();
+    var mapModel = new WorkoutEditor.Models.MapModel();
 
     fileView.on('fileChanged', function(file) {
         var name = file.name.split('.');
@@ -35,13 +37,14 @@ $(document).ready(function () {
                 break;
             default:
                 // Not supported file type
-                
+                console.log('File not supported');
                 break;
         }
 
         model.on('change:data', function() {
             mapModel.set('fileModel', model);
-            new WorkoutEditor.Views.MapsView({el: $('.map'), model: mapModel});
+            new WorkoutEditor.Views.MapView({el: $('.map'), model: mapModel});
+            new WorkoutEditor.Views.DataView({el: $('.data'), model: model});
         });
 
 
