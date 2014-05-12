@@ -102,18 +102,18 @@
 
             <label for="distance">Distance</label>
             <div><%= distance %> miles</div>
-            
-            <table style="display:none">
+
+            <table>
                 <tr>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Time</th>
+                    <th>Mile</th>
+                    <th>Duration</th>
+                    <th>Pace</th>
                 </tr>
-                <% trackpoints.forEach(function(trackpoint) { %>
+                <% trackpoints.paces().forEach(function(paceItem) { %>
                     <tr>
-                        <td><%= trackpoint.get('latitude') %></td>
-                        <td><%= trackpoint.get('longitude') %></td>
-                        <td><%= trackpoint.get('time') %></td>
+                        <td><%= paceItem.mile %></td>
+                        <td><%= Math.floor(paceItem.elapsed/60) + ':' + paceItem.elapsed%60 %> min</td>
+                        <td><%= Math.floor(paceItem.elapsed/(60*paceItem.distance)) + ':' + (paceItem.elapsed/paceItem.distance)%60 %> min/mile</td>
                     </tr>
                 <% }); %>
             </table>
