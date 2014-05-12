@@ -1,0 +1,14 @@
+.data {
+	label {
+		width: 20%;
+		min-width: 150px;
+		float: left;
+		clear: both;
+	}
+
+	div, input {
+		width: 30%;
+		min-width: 150px;
+		float: left;
+	}
+}

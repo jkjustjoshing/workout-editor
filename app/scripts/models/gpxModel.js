@@ -32,7 +32,7 @@ window.WorkoutEditor.Models.GpxModel = Backbone.Model.extend({
           data.trackpoints.push(new WorkoutEditor.Models.TrackpointModel({
               latitude: parseFloat($this.attr('lat')),
               longitude: parseFloat($this.attr('lon')),
-              time: new Date($this.children('time').text())
+              time: moment($this.children('time').text())
           }));
 
       });

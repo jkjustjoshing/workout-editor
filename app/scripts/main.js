@@ -20,27 +20,12 @@ window.WorkoutEditor = {
 $(document).ready(function () {
     WorkoutEditor.init();
 
-    var fileView = new WorkoutEditor.Views.FileView({el: $('div.uploader'), });
+    var uploadView = new WorkoutEditor.Views.UploadView({el: $('div.uploader'), });
     var mapModel = new WorkoutEditor.Models.MapModel();
 
-    fileView.on('fileChanged', function(file) {
-        var name = file.name.split('.');
-        var model;
-        switch(name[name.length-1]) {
-            case 'tcx': 
-                // Parse as .tcx
-                model = new WorkoutEditor.Models.TcxModel({file: file});
-                break;
-            case 'gpx': 
-                // Parse as .tcx
-                model = new WorkoutEditor.Models.GpxModel({file: file});
-                break;
-            default:
-                // Not supported file type
-                console.log('File not supported');
-                break;
-        }
-
+    uploadView.on('fileChanged', function(file) {
+        var model = new WorkoutEditor.Models.FileModel({file: file});
+               
         model.on('change:data', function() {
             mapModel.set('fileModel', model);
             new WorkoutEditor.Views.MapView({el: $('.map'), model: mapModel});
@@ -51,3 +36,7 @@ $(document).ready(function () {
     });
 
 });
+
+Math.toRadians = function(deg) {
+  return deg * (Math.PI/180)
+};

@@ -31,7 +31,7 @@
             </div>
 
             <div class="uploader">
-                <Label for="file">Choose a .tcx file to upload</label>
+                <Label for="file">Choose a .tcx or .gpx file to upload</label>
                 <input type="file" id="file" />
             </div>
 
@@ -72,13 +72,15 @@
         <script src="bower_components/sass-bootstrap/js/scrollspy.js"></script>
         <script src="bower_components/sass-bootstrap/js/collapse.js"></script>
         <script src="bower_components/sass-bootstrap/js/tab.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/main.js -->
         <script src="scripts/main.js"></script>
         <script src="scripts/views/dataView.js"></script>
-        <script src="scripts/views/fileView.js"></script>
+        <script src="scripts/views/uploadView.js"></script>
         <script src="scripts/views/mapView.js"></script>
+        <script src="scripts/models/fileModel.js"></script>
         <script src="scripts/models/gpxModel.js"></script>
         <script src="scripts/models/tcxModel.js"></script>
         <script src="scripts/models/mapModel.js"></script>
@@ -89,7 +91,19 @@
         <!-- endbuild -->
 
         <script type="text/template" id="views/table">
-            <table>
+            <label for="startTime">Start Time</label>
+            <input id="startTime" type="time" step="1" value="<%= times.start.format('HH:mm:ss') %>" />
+            
+            <label for="stopTime">Stop Time</label>
+            <input id="stopTime" type="time" step="1" value="<%= times.stop.format('HH:mm:ss') %>" />
+
+            <label for="duration">Duration</label>
+            <div><%= times.duration.format('H:mm:ss') %></div>
+
+            <label for="distance">Distance</label>
+            <div><%= distance %> miles</div>
+            
+            <table style="display:none">
                 <tr>
                     <th>Latitude</th>
                     <th>Longitude</th>

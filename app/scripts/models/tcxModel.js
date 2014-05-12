@@ -41,7 +41,7 @@ window.WorkoutEditor.Models.TcxModel = Backbone.Model.extend({
                 data.trackpoints.push(new WorkoutEditor.Models.TrackpointModel({
                     latitude: parseFloat($(this).children('Position').children('LatitudeDegrees').text()),
                     longitude: parseFloat($(this).children('Position').children('LongitudeDegrees').text()),
-                    time: new Date($(this).children('Time').text()),
+                    time: moment($(this).children('Time').text()),
                     altitude: parseFloat($(this).children('AltitudeMeters').text()),
                     distance: parseFloat($(this).children('DistanceMeters').text())
                 }));

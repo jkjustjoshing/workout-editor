@@ -1,4 +1,4 @@
-window.WorkoutEditor.Views.FileView = Backbone.View.extend({
+window.WorkoutEditor.Views.UploadView = Backbone.View.extend({
     events: {
         'change input[type="file"]': 'fileSelection'
     },
