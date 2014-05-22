@@ -1,27 +1,13 @@
-window.WorkoutEditor.Models.TcxModel = Backbone.Model.extend({
-    defaults: {
-        file: null,
-        fileContents: ''
-    },
-    initialize: function() {
-        var which = this;
-        this.on('change:file', function() {
-            var fr = new FileReader();
+'use strict';
 
-            fr.onload = (function(e) {
-                this.set('fileContents', fr.result);
-                this.parse();
-            }).bind(this);
-
-            fr.readAsText(which.get('file'));
-        });
-
-        this.trigger('change:file');
-    },
-    parse: function() {
+angular.module('workoutEditorApp')
+  .factory('TCX', function (moment) {
+    
+    return {
+      parse: function(fileContents) {
         var data = {};
 
-        var xml = $($.parseXML(this.get('fileContents'))).find('TrainingCenterDatabase');
+        var xml = $($.parseXML(fileContents)).find('TrainingCenterDatabase');
 
         var activity = xml.children('Activities').first().children('Activity').first();
         data.type = activity.attr('Sport');
@@ -49,7 +35,7 @@ window.WorkoutEditor.Models.TcxModel = Backbone.Model.extend({
 
         });
 
-        this.set('data', data);
-    }
-
-});
+        return data;
+      } 
+    };
+  });
