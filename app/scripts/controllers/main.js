@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('workoutEditorApp')
-  .controller('MainCtrl', function ($scope, GPX, Trackpoints) {
+  .controller('MainCtrl', function ($scope, GPX, TCX, Trackpoints, $state) {
     $scope.$watch('file', function(newVal, oldVal) {
     	if(newVal) {
     		var fr = new FileReader();
@@ -12,7 +12,8 @@ angular.module('workoutEditorApp')
                 switch(name[name.length-1]) {
 				    case 'tcx': 
 				        // Parse as .tcx
-				        model = new WorkoutEditor.Models.TcxModel({file: this.get('file')});
+				        var data = TCX.parse(fr.result);
+				        Trackpoints.setList(data.trackpoints);
 				        break;
 				    case 'gpx': 
 				        // Parse as .tcx

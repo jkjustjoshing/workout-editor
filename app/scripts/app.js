@@ -16,5 +16,10 @@ angular
         url: '/',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .state('edit', {
+        url: '/edit',
+        templateUrl: 'views/edit.html',
+        controller: 'EditCtrl'
       });
   });
