@@ -1,6 +1,11 @@
 <div>Details</div>
 <ul>
 	<li> Total Distance: {{totalDistance | number:2}} miles </li>
+	<li> Distance interval: <input type="text" ng-model="distanceIntervals" /> mile(s) </li>
+</ul>
+<h3>Times</h3>
+<ul>
+	<li ng-repeat="lap in laps">{{lap.seconds | time}}</li>
 </ul>
 <table>
     <tr>

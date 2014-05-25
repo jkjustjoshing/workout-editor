@@ -20,20 +20,23 @@ angular.module('workoutEditorApp')
     Trackpoint.prototype.getTime = function() {
       return this.data.time;
     };
+    Trackpoint.prototype.getGoogleLatLng = function() {
+      return new google.maps.LatLng(this.data.latitude, this.data.longitude);
+    }
     Trackpoint.prototype.distance = function(otherPoint) {
     	var initialLat = this.data.latitude,
 		    initialLong = this.data.longitude,
 		    finalLat = otherPoint.data.latitude,
 		    finalLong = otherPoint.data.longitude;
 
-		if(!initialLat ||
-		   !initialLong ||
-		   !finalLat ||
-		   !finalLong) {
-			return 0;
-		}
+  		if(!initialLat ||
+  		   !initialLong ||
+  		   !finalLat ||
+  		   !finalLong) {
+  			return 0;
+  		}
 
-		var R = 3961,
+  		var R = 3961,
 	        dLat = Math.toRadians(finalLat-initialLat),
 	        dLon = Math.toRadians(finalLong-initialLong),
 	        lat1 = Math.toRadians(initialLat),
@@ -107,6 +110,33 @@ angular.module('workoutEditorApp')
 	  			length += trackpoints[i].distance(trackpoints[i-1]);
 	  		}
   			return length;
+  		},
+      getLaps: function(lapDistance) {
+        if(!lapDistance) {
+          lapDistance = 1;
+        }
+
+        var lapNumber = 1;
+        var totalLength = 0;
+        var laps = [];
+        var lastLapTime = trackpoints[0].getTime();
+        for(var i = 1; i < trackpoints.length; ++i) {
+          totalLength += trackpoints[i].distance(trackpoints[i-1]);
+          if(totalLength > lapNumber*lapDistance) {
+
+            laps.push({
+              seconds: trackpoints[i].getTime().diff(lastLapTime) / 1000,
+              startTime: lastLapTime,
+              endTime: trackpoints[i].getTime(),
+              distance: lapDistance
+            });
+
+            lastLapTime = trackpoints[i].getTime();
+            lapNumber++;
+          }
+        }
+        return laps;
+
       },
 
       // Assumption: doesn't cross longitude 180/-180

@@ -29,4 +29,7 @@ angular.module('workoutEditorApp')
         };
     	}
     });
+
+    window.Trackpoints = Trackpoints
+
   });
