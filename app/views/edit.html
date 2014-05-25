@@ -4,17 +4,16 @@
 	<li> Distance interval: <input type="text" ng-model="distanceIntervals" /> mile(s) </li>
 </ul>
 <h3>Times</h3>
-<ul>
-	<li ng-repeat="lap in laps">{{lap.seconds | time}}</li>
-</ul>
 <table>
     <tr>
-        <th>Latitude</th>
-        <th>Longitude</th>
+        <th>Distance</th>
         <th>Time</th>
+        <th>Pace</th>
     </tr>
-    <tr>
-        <td></td>
+    <tr ng-repeat="lap in laps">
+        <td>{{lap.distance | number:2}}</td>
+        <td>{{lap.seconds | time:0}} minutes</td>
+        <td>{{(lap.seconds/lap.distance) | time:0}} minutes/mile</td>
     </tr>
  </table>
 

@@ -119,22 +119,36 @@ angular.module('workoutEditorApp')
         var lapNumber = 1;
         var totalLength = 0;
         var laps = [];
-        var lastLapTime = trackpoints[0].getTime();
+        var lastLapPoint = trackpoints[0];
         for(var i = 1; i < trackpoints.length; ++i) {
           totalLength += trackpoints[i].distance(trackpoints[i-1]);
-          if(totalLength > lapNumber*lapDistance) {
 
+          if(totalLength > lapNumber*lapDistance) {
             laps.push({
-              seconds: trackpoints[i].getTime().diff(lastLapTime) / 1000,
-              startTime: lastLapTime,
-              endTime: trackpoints[i].getTime(),
-              distance: lapDistance
+              seconds: trackpoints[i].getTime().diff(lastLapPoint.getTime()) / 1000,
+              distance: lapDistance,
+              totalDistance: totalLength,
+              startPoint: lastLapPoint,
+              endPoint: trackpoints[i]
             });
 
-            lastLapTime = trackpoints[i].getTime();
+            lastLapPoint = trackpoints[i];
             lapNumber++;
+          } else if (i+1 === trackpoints.length) {
+            // Last point - finish the lap
+            
+            var lapDistance = totalLength - laps[laps.length-1].totalDistance;
+
+            laps.push({
+              seconds: trackpoints[i].getTime().diff(lastLapPoint.getTime()) / 1000,
+              distance: lapDistance,
+              totalDistance: totalLength,
+              startPoint: lastLapPoint,
+              endPoint: trackpoints[i]
+            });
           }
         }
+
         return laps;
 
       },
