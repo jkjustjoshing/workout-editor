@@ -11,6 +11,15 @@ angular.module('workoutEditorApp')
     		time: data.time
     	};
     };
+    Trackpoint.prototype.getLatitude = function() {
+      return this.data.latitude;
+    };
+    Trackpoint.prototype.getLongitude = function() {
+      return this.data.longitude;
+    };
+    Trackpoint.prototype.getTime = function() {
+      return this.data.time;
+    };
     Trackpoint.prototype.distance = function(otherPoint) {
     	var initialLat = this.data.latitude,
 		    initialLong = this.data.longitude,

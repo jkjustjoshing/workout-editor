@@ -26,7 +26,6 @@ angular.module('workoutEditorApp')
 				        break;
 				}
 				$state.go('edit');
-				console.log(Trackpoints.getList(), Trackpoints.totalDistance());
             };
     	}
     });
