@@ -7,26 +7,26 @@ angular.module('workoutEditorApp')
     		var fr = new FileReader();
     		fr.readAsText(newVal);
     		fr.onload = function() {
-                // Parse
-                var name = newVal.name.split('.');
-                switch(name[name.length-1]) {
+          // Parse
+          var name = newVal.name.split('.');
+          switch(name[name.length-1]) {
 				    case 'tcx': 
-				        // Parse as .tcx
-				        var data = TCX.parse(fr.result);
-				        Trackpoints.setList(data.trackpoints);
-				        break;
+			        // Parse as .tcx
+			        var data = TCX.parse(fr.result);
+			        Trackpoints.setList(data.trackpoints);
+			        break;
 				    case 'gpx': 
-				        // Parse as .tcx
-				        var data = GPX.parse(fr.result);
-				        Trackpoints.setList(data.trackpoints);
-				        break;
+			        // Parse as .tcx
+			        var data = GPX.parse(fr.result);
+			        Trackpoints.setList(data.trackpoints);
+			        break;
 				    default:
-				        // Not supported file type
-				        console.log('File not supported');
-				        break;
-				}
-				$state.go('edit');
-            };
+			        // Not supported file type
+			        console.log('File not supported');
+			        break;
+					}
+					$state.go('edit');
+        };
     	}
     });
   });

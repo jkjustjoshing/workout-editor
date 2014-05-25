@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('workoutEditorApp')
-  .factory('Trackpoints', function () {
+  .factory('Trackpoints', function (moment) {
     
     var Trackpoint = function(data) {
     	this.data = {
     		latitude: data.latitude,
     		longitude: data.longitude,
     		elevation: data.elevation,
-    		time: data.time
+    		time: moment(data.time)
     	};
     };
     Trackpoint.prototype.getLatitude = function() {
@@ -45,6 +45,36 @@ angular.module('workoutEditorApp')
 
 	    return R * c;
     };
+
+    var getBoundingPoints = function() {
+      var upperLeft = {
+        latitude: trackpoints[0].getLatitude(),
+        longitude: trackpoints[0].getLongitude()
+      };
+      var lowerRight = {
+        latitude: trackpoints[0].getLatitude(),
+        longitude: trackpoints[0].getLongitude()
+      };
+      
+      trackpoints.forEach(function(point) {
+        if(point.getLatitude() > upperLeft.latitude ) {
+          upperLeft.latitude = point.getLatitude();
+        } else if(point.getLatitude() < lowerRight.latitude) {
+          lowerRight.latitude = point.getLatitude();
+        }
+
+        if(point.getLongitude() < upperLeft.longitude ) {
+          upperLeft.longitude = point.getLongitude();
+        } else if(point.getLongitude() > lowerRight.longitude) {
+          lowerRight.longitude = point.getLongitude();
+        }
+      });
+
+      return {
+        upperLeft: upperLeft,
+        lowerRight: lowerRight
+      };
+    };
  
     var trackpoints = [];
 
@@ -77,6 +107,32 @@ angular.module('workoutEditorApp')
 	  			length += trackpoints[i].distance(trackpoints[i-1]);
 	  		}
   			return length;
-  		}
+      },
+
+      // Assumption: doesn't cross longitude 180/-180
+      getCenterPoint: function() {
+        var points = getBoundingPoints();
+
+        var centerPoint = new Trackpoint({
+          latitude: (points.upperLeft.latitude + points.lowerRight.latitude) / 2,
+          longitude: (points.upperLeft.longitude + points.lowerRight.longitude) / 2
+        });
+
+        return centerPoint;
+      },
+      getNorthEast: function() {
+        var points = getBoundingPoints();
+        return new Trackpoint({
+          latitude: points.upperLeft.latitude, 
+          longitude: points.lowerRight.longitude
+        });
+      },
+      getSouthWest: function() {
+        var points = getBoundingPoints();
+        return new Trackpoint({
+          latitude: points.lowerRight.latitude, 
+          longitude: points.upperLeft.longitude
+        });
+      }
     };
   });
