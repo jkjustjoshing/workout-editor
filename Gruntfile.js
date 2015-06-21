@@ -22,6 +22,7 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
+      tmp: '.tmp',
       dist: 'dist'
     },
 
@@ -32,8 +33,8 @@ module.exports = function (grunt) {
         tasks: ['bowerInstall']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: [],
+        files: ['<%= yeoman.app %>/scripts/**/*.js'],
+        tasks: ['babel', 'ngAnnotate'],
         options: {
           livereload: true
         }
@@ -71,7 +72,7 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          open: true,
+          open: false,
           base: [
             '.tmp',
             '<%= yeoman.app %>'
@@ -275,13 +276,11 @@ module.exports = function (grunt) {
     // ngmin tries to make the code safe for minification automatically by
     // using the Angular long form for dependency injection. It doesn't work on
     // things like resolve or inject so those have to be done manually.
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
+          src: '.tmp/scripts/**/*.js'
         }]
       }
     },
@@ -339,6 +338,20 @@ module.exports = function (grunt) {
       ]
     },
 
+    babel: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/scripts',
+          dest: '.tmp/scripts/',
+          src: '**/*.js'
+        }]
+      }
+    },
+
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
@@ -383,6 +396,8 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'bowerInstall',
+      'babel',
+      'ngAnnotate',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -410,7 +425,6 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'autoprefixer',
     'concat',
-    'ngmin',
     'copy:dist',
     'cdnify',
     'cssmin',
