@@ -10,12 +10,12 @@ angular.module('workoutEditorApp')
           // Parse
           var name = newVal.name.split('.');
           switch(name[name.length-1]) {
-				    case 'tcx': 
+				    case 'tcx':
 			        // Parse as .tcx
 			        var data = TCX.parse(fr.result);
 			        Trackpoints.setList(data.trackpoints);
 			        break;
-				    case 'gpx': 
+				    case 'gpx':
 			        // Parse as .tcx
 			        var data = GPX.parse(fr.result);
 			        Trackpoints.setList(data.trackpoints);
@@ -30,6 +30,6 @@ angular.module('workoutEditorApp')
     	}
     });
 
-    window.Trackpoints = Trackpoints
+    window.Trackpoints = Trackpoints;
 
   });

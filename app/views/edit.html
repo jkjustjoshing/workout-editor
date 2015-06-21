@@ -1,7 +1,7 @@
 <div>Details</div>
 <ul>
-	<li> Total Distance: {{totalDistance | number:2}} miles </li>
-	<li> Distance interval: <input type="text" ng-model="distanceIntervals" /> mile(s) </li>
+	<li> Total Distance: {{edit.totalDistance | number:2}} miles </li>
+	<li> Distance interval: <input type="text" ng-model="edit.distanceIntervals" /> mile(s) </li>
 </ul>
 <h3>Times</h3>
 <table>
@@ -10,7 +10,7 @@
         <th>Time</th>
         <th>Pace</th>
     </tr>
-    <tr ng-repeat="lap in laps">
+    <tr ng-repeat="lap in edit.laps">
         <td>{{lap.distance | number:2}}</td>
         <td>{{lap.seconds | time:0}} minutes</td>
         <td>{{(lap.seconds/lap.distance) | time:0}} minutes/mile</td>

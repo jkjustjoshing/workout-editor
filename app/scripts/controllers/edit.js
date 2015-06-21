@@ -2,20 +2,20 @@
 
 angular.module('workoutEditorApp')
   .controller('EditCtrl', function ($scope, Trackpoints, $state) {
+    var ctrl = this;
 
     if(Trackpoints.getList().length === 0) {
     	$state.transitionTo('/');
     	return;
     }
 
-    $scope.totalDistance = Trackpoints.totalDistance();
+    ctrl.totalDistance = Trackpoints.totalDistance();
 
-    $scope.distanceIntervals = 1;
+    ctrl.distanceIntervals = 1;
 
-
-    $scope.$watch('distanceIntervals', function(newVal) {
+    $scope.$watch(function () { return ctrl.distanceIntervals; }, function(newVal) {
     	if(newVal) {
-    		$scope.laps = Trackpoints.getLaps(newVal);
+    		ctrl.laps = Trackpoints.getLaps(newVal);
 
 
     	}

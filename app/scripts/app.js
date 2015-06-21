@@ -15,11 +15,13 @@ angular
       .state('/', {
         url: '/',
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        controllerAs: 'main'
       })
       .state('edit', {
         url: '/edit',
         templateUrl: 'views/edit.html',
-        controller: 'EditCtrl'
+        controller: 'EditCtrl',
+        controllerAs: 'edit'
       });
   });
