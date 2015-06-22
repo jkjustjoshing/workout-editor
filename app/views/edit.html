@@ -9,11 +9,18 @@
         <th>Distance</th>
         <th>Time</th>
         <th>Pace</th>
+        <th>Update Pace</th>
     </tr>
     <tr ng-repeat="lap in edit.laps">
         <td>{{lap.distance | number:2}}</td>
         <td>{{lap.seconds | time:0}} minutes</td>
         <td>{{(lap.seconds/lap.distance) | time:0}} minutes/mile</td>
+        <td>
+          <form>
+            <input ng-model="edit.newPace[$index]" placeholder="Enter new pace">
+            <button type="submit" ng-click="edit.updatePace(edit.newPace[$index], lap)">Update</button>
+          </form>
+        </td>
     </tr>
  </table>
 

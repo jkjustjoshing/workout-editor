@@ -21,4 +21,20 @@ angular.module('workoutEditorApp')
     	}
     });
 
+    ctrl.newPace = [];
+    ctrl.updatePace = updatePace;
+
+    function updatePace (newPace, lap) {
+      var time = /^([0-9]{1,2}):([0-9]{2})$/;
+      var match = newPace.match(time);
+      if (match) {
+        var seconds = parseInt(match[2], 10);
+        var minutes = parseInt(match[1], 10);
+        var newTime = seconds + (minutes * 60);
+        Trackpoints.setLap(lap.startPoint, lap.endPoint, newTime);
+      } else {
+        console.log('bad time');
+      }
+    }
+
   });

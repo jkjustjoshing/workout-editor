@@ -2,7 +2,7 @@
 
 angular.module('workoutEditorApp')
   .factory('Trackpoints', function (moment) {
-    
+
     var Trackpoint = function(data) {
     	this.data = {
     		latitude: data.latitude,
@@ -44,7 +44,7 @@ angular.module('workoutEditorApp')
 
 	        a = Math.sin(dLat/2) * Math.sin(dLat/2) +
 	            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2),
-	        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
 	    return R * c;
     };
@@ -58,7 +58,7 @@ angular.module('workoutEditorApp')
         latitude: trackpoints[0].getLatitude(),
         longitude: trackpoints[0].getLongitude()
       };
-      
+
       trackpoints.forEach(function(point) {
         if(point.getLatitude() > upperLeft.latitude ) {
           upperLeft.latitude = point.getLatitude();
@@ -78,7 +78,7 @@ angular.module('workoutEditorApp')
         lowerRight: lowerRight
       };
     };
- 
+
     var trackpoints = [];
 
     return {
@@ -136,7 +136,7 @@ angular.module('workoutEditorApp')
             lapNumber++;
           } else if (i+1 === trackpoints.length) {
             // Last point - finish the lap
-            
+
             var lapDistance = totalLength - laps[laps.length-1].totalDistance;
 
             laps.push({
@@ -153,6 +153,24 @@ angular.module('workoutEditorApp')
 
       },
 
+      setLap: function (firstTrackpoint, lastTrackpoint, newTime) {
+        debugger;
+        var firstIndex = trackpoints.indexOf(firstTrackpoint);
+        var lastIndex = trackpoints.indexOf(lastTrackpoint);
+        if (!(firstIndex >= 0 && lastIndex >= 0)) {
+          throw new Error('Trackpoints not found in trackpoint array');
+        }
+
+        var oldTime = lastTrackpoint.data.time.diff(firstTrackpoint.data.time);
+        var scale =
+
+        for (var i = firstIndex; i < trackpoints.length; ++i) {
+
+
+
+        }
+      },
+
       // Assumption: doesn't cross longitude 180/-180
       getCenterPoint: function() {
         var points = getBoundingPoints();
@@ -167,14 +185,14 @@ angular.module('workoutEditorApp')
       getNorthEast: function() {
         var points = getBoundingPoints();
         return new Trackpoint({
-          latitude: points.upperLeft.latitude, 
+          latitude: points.upperLeft.latitude,
           longitude: points.lowerRight.longitude
         });
       },
       getSouthWest: function() {
         var points = getBoundingPoints();
         return new Trackpoint({
-          latitude: points.lowerRight.latitude, 
+          latitude: points.lowerRight.latitude,
           longitude: points.upperLeft.longitude
         });
       }
