@@ -22,7 +22,10 @@ angular.module('workoutEditorApp')
     };
     Trackpoint.prototype.getGoogleLatLng = function() {
       return new google.maps.LatLng(this.data.latitude, this.data.longitude);
-    }
+    };
+    Trackpoint.prototype.timeDifference = function (otherPoint) {
+      return this.data.time.diff(otherPoint.data.time);
+    };
     Trackpoint.prototype.distance = function(otherPoint) {
     	var initialLat = this.data.latitude,
 		    initialLong = this.data.longitude,
